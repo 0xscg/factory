@@ -7,7 +7,8 @@
     "./billing": "./src/billing/index.ts",
     "./identity": "./src/identity/index.ts",
     "./db": "./src/db/index.ts",
-    "./audit": "./src/audit/index.ts"
+    "./audit": "./src/audit/index.ts",
+    "./records": "./src/records/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

@@ -7,3 +7,4 @@ export {
   roleEnum,
 } from "./identity.js";
 export { auditLog } from "./audit.js";
+export { records, recordVersions } from "./records.js";

@@ -95,3 +95,4 @@ export async function readAuditTrail(
     .orderBy(desc(auditLog.createdAt))
     .limit(limit);
 }
+export { mutate, type MutationContext, type MutationOutcome } from "./mutate.js";

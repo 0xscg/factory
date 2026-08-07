@@ -60,6 +60,7 @@ Must land before beta invites (Phase 5 security-auditor will re-check):
 - **Rate limiting** — magic-link requests per email/IP and TOTP attempts per user; build on Redis/BullMQ when the Deadline engine brings Redis into the chassis.
 - **totp_secret exposure** — exclude the column from the app role's default SELECT (dedicated accessor) or encrypt at rest.
 - Minor: expiry timestamps mix app-server clock (write) with DB clock (check); use DB `now()` on both sides.
+- Records review follow-up: version-history/audit parity is per-call-site (everything must go through `mutate()`/`updateRecord`); consider a deferred constraint trigger on `records` UPDATE asserting a matching `record_versions` row to make it structural at the DB level.
 
 ## Sequencing risk
 
