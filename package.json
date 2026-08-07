@@ -1,0 +1,26 @@
+{
+  "name": "factory",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.14.0",
+  "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck typecheck:root",
+    "typecheck:root": "tsc --noEmit",
+    "test": "turbo run test test:root",
+    "test:root": "vitest run",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@factory/eslint-config": "workspace:*",
+    "@factory/tsconfig": "workspace:*",
+    "@types/node": "^22.13.0",
+    "eslint": "^9.32.0",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.5",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

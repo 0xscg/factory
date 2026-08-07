@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.next/
+.turbo/
+*.log
+.env*
+CLAUDE.local.md
+.claude/settings.local.json
+*.swp

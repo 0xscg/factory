@@ -1,0 +1,41 @@
+name: factory
+
+services:
+  postgres:
+    image: docker.io/library/postgres:16
+    ports:
+      # 5433 on the host: WSL's system postgresql cluster already owns 5432.
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: factory
+      POSTGRES_PASSWORD: factory
+      POSTGRES_DB: factory
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U factory -d factory"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: docker.io/library/redis:7
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  gotenberg:
+    image: docker.io/gotenberg/gotenberg:8
+    ports:
+      - "3100:3000"
+
+volumes:
+  pgdata:
+  redisdata:
