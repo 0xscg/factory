@@ -8,3 +8,4 @@ export {
 } from "./identity.js";
 export { auditLog } from "./audit.js";
 export { records, recordVersions } from "./records.js";
+export { evidence } from "./evidence.js";

@@ -8,7 +8,8 @@
     "./identity": "./src/identity/index.ts",
     "./db": "./src/db/index.ts",
     "./audit": "./src/audit/index.ts",
-    "./records": "./src/records/index.ts"
+    "./records": "./src/records/index.ts",
+    "./evidence": "./src/evidence/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
