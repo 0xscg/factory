@@ -1,6 +1,7 @@
 export {
   createDb,
   withOrg,
+  withUser,
   type Db,
   type DbHandle,
   type TenantTx,

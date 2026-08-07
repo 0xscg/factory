@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./billing": "./src/billing/index.ts"
+    "./billing": "./src/billing/index.ts",
+    "./identity": "./src/identity/index.ts",
+    "./db": "./src/db/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

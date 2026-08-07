@@ -43,3 +43,24 @@ export async function withOrg<T>(
     return fn(tx);
   });
 }
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * User-scoped (not org-scoped) context: enables self-view policies like
+ * members_self_view ("which orgs am I in?"). Grants access only to rows
+ * explicitly policied on app.user_id — org data stays hidden.
+ */
+export async function withUser<T>(
+  db: Db,
+  userId: string,
+  fn: (tx: TenantTx) => Promise<T>,
+): Promise<T> {
+  if (!UUID_RE.test(userId))
+    throw new Error(`withUser: userId is not a UUID: ${userId}`);
+  return db.transaction(async (tx) => {
+    await tx.execute(sql`select set_config('app.user_id', ${userId}, true)`);
+    return fn(tx);
+  });
+}

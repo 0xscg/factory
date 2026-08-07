@@ -19,7 +19,7 @@ _First skin per the conveyor calendar (architecture.md §4.8). Statutory catalys
 
 1. **DB foundation** — Drizzle setup, migration workflow (`drizzle-kit generate`, SQL committed), tenancy pattern: every table gets `org_id` + `product`, RLS policy authored in the same migration. This is the pattern code-reviewer blocks on — get it right once here.
 2. **Identity** — email + magic link + TOTP, orgs, members, four roles (owner/admin/member/auditor read-only). RLS session context (`set_config('app.org_id', ...)`) established here.
-3. **Audit log** — append-only table (no UPDATE/DELETE grants, enforced in migration), event emitted by a single `mutate()` helper every other module must use. Built early so every later module gets coverage for free.
+3. **Audit log** — append-only table (no UPDATE/DELETE grants, enforced in migration), event emitted by a single `mutate()` helper every other module must use. Built early so every later module gets coverage for free. **Sequencing decision (recorded at Identity review):** Identity shipped first without audit events; retrofitting its mutations (org creation, role grants, session revocation, TOTP enable) through `mutate()` is the first task of this module, before any new module starts.
 4. **Records** — generic typed entities from Zod schemas, versioning.
 5. **Evidence vault** — R2 upload, SHA-256 at attach, immutability trigger.
 6. **Checklist engine** — templated multi-step assessments, evidence requirements, sign-off.
@@ -51,6 +51,15 @@ _First skin per the conveyor calendar (architecture.md §4.8). Statutory catalys
 - **security-auditor** full run: dependency audit, secret scan, OWASP pass on auth flows, first permissions snapshot.
 - Full org JSON+files export (day-one requirement); nightly `pg_dump` → R2 job.
 - Coolify service + domain + Coolify-vault secrets; smoke test; beta cohort invites (3–5 free design partners).
+
+## Identity hardening backlog (pre-launch, from code review)
+
+Must land before beta invites (Phase 5 security-auditor will re-check):
+
+- **TOTP replay prevention** — store last-used step per user, accept each code once (OWASP ASVS 2.8.4); needs a small column + conditional update.
+- **Rate limiting** — magic-link requests per email/IP and TOTP attempts per user; build on Redis/BullMQ when the Deadline engine brings Redis into the chassis.
+- **totp_secret exposure** — exclude the column from the app role's default SELECT (dedicated accessor) or encrypt at rest.
+- Minor: expiry timestamps mix app-server clock (write) with DB clock (check); use DB `now()` on both sides.
 
 ## Sequencing risk
 
