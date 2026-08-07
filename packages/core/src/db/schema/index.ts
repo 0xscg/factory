@@ -9,3 +9,4 @@ export {
 export { auditLog } from "./audit.js";
 export { records, recordVersions } from "./records.js";
 export { evidence } from "./evidence.js";
+export { checklists, checklistSteps, checklistStatusEnum } from "./checklists.js";
