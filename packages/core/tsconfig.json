@@ -1,0 +1,7 @@
+{
+  "extends": "@factory/tsconfig/library.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "types": ["node"]
+  }
+}
