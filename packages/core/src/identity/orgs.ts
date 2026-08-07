@@ -5,6 +5,7 @@ import { withOrg, withUser, type Db } from "../db/client.js";
 import { members, orgs } from "../db/schema/index.js";
 import { requireRole, type Role } from "./roles.js";
 import { upsertUserByEmail } from "./users.js";
+import { audit } from "../audit/index.js";
 
 const orgNameSchema = z.string().trim().min(1).max(200);
 
@@ -17,6 +18,7 @@ export async function createOrgWithOwner(
   db: Db,
   name: string,
   ownerUserId: string,
+  product = "identity",
 ): Promise<{ orgId: string }> {
   const orgName = orgNameSchema.parse(name);
   const orgId = randomUUID();
@@ -25,6 +27,22 @@ export async function createOrgWithOwner(
     await tx
       .insert(members)
       .values({ orgId, userId: ownerUserId, role: "owner" });
+    await audit(tx, orgId, {
+      product,
+      action: "org.created",
+      entityType: "org",
+      entityId: orgId,
+      actorUserId: ownerUserId,
+      after: { name: orgName },
+    });
+    await audit(tx, orgId, {
+      product,
+      action: "member.added",
+      entityType: "member",
+      entityId: ownerUserId,
+      actorUserId: ownerUserId,
+      after: { role: "owner" },
+    });
   });
   return { orgId };
 }
@@ -36,6 +54,7 @@ export async function addMember(
   actingUserId: string,
   email: string,
   role: Role,
+  product = "identity",
 ): Promise<{ userId: string }> {
   if (role === "owner")
     throw new Error("ownership is transferred, not granted");
@@ -44,6 +63,14 @@ export async function addMember(
   await withOrg(db, orgId, async (tx) => {
     await requireRole(tx, orgId, actingUserId, "admin");
     await tx.insert(members).values({ orgId, userId: user.id, role });
+    await audit(tx, orgId, {
+      product,
+      action: "member.added",
+      entityType: "member",
+      entityId: user.id,
+      actorUserId: actingUserId,
+      after: { role, email: user.email },
+    });
   });
   return { userId: user.id };
 }

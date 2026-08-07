@@ -6,7 +6,8 @@
   "exports": {
     "./billing": "./src/billing/index.ts",
     "./identity": "./src/identity/index.ts",
-    "./db": "./src/db/index.ts"
+    "./db": "./src/db/index.ts",
+    "./audit": "./src/audit/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

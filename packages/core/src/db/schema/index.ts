@@ -6,3 +6,4 @@ export {
   members,
   roleEnum,
 } from "./identity.js";
+export { auditLog } from "./audit.js";

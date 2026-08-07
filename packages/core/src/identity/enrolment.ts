@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import type { Db } from "../db/client.js";
 import { users } from "../db/schema/index.js";
 import { generateTotpSecret, totpEnrolmentUri, verifyTotp } from "./totp.js";
+import { auditForUserOrgs } from "../audit/index.js";
 
 /**
  * Two-step TOTP enrolment: generate + store the secret (disabled), show
@@ -35,6 +36,12 @@ export async function confirmTotpEnrolment(
   if (!user?.totpSecret || user.totpEnabled) return false;
   if (!verifyTotp(user.totpSecret, code)) return false;
   await db.update(users).set({ totpEnabled: true }).where(eq(users.id, userId));
+  await auditForUserOrgs(db, userId, {
+    action: "user.totp_enabled",
+    entityType: "user",
+    entityId: userId,
+    actorUserId: userId,
+  });
   return true;
 }
 
