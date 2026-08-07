@@ -12,11 +12,14 @@
     "dev:webhooks": "tsx scripts/webhook-dev-server.mts"
   },
   "dependencies": {
+    "drizzle-orm": "^0.45.2",
+    "postgres": "^3.4.9",
     "stripe": "^18.4.0",
     "zod": "^3.25.0"
   },
   "devDependencies": {
     "@factory/tsconfig": "workspace:*",
+    "drizzle-kit": "^0.31.10",
     "tsx": "^4.23.11",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"

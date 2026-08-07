@@ -57,3 +57,18 @@ stripe trigger invoice.payment_failed --api-key "$STRIPE_SECRET_KEY"
 ```
 
 Unit tests (`pnpm test`) cover signature verify/tamper and duplicate-delivery idempotency without the network; `vitest` (watch mode) inside `packages/core` gives the fastest loop.
+
+## Database (Drizzle + RLS)
+
+Schema lives in `packages/core/src/db/schema/`; committed SQL migrations in `packages/core/drizzle/`.
+
+```sh
+cd packages/core
+pnpm exec drizzle-kit generate --name <change>   # schema change → SQL migration (commit it)
+```
+
+For every tenant-scoped table: spread `tenantColumns` (org_id + product) into the schema and append the statements from `tenantRlsStatements("<table>")` to the generated migration — RLS is enforced in the DB, not app code.
+
+**Roles (the superuser trap):** the local `factory` user is the container superuser and **bypasses RLS entirely**. Migrations run as it; the application must connect as a login role inheriting the NOLOGIN `factory_app` role that migrations create and grant. Locally/tests: `CREATE ROLE app_login LOGIN PASSWORD 'app' IN ROLE factory_app`. Production: create the login role the same way in Coolify's postgres and point the app's `DATABASE_URL` at it — never at the superuser.
+
+All tenant queries go through `withOrg(db, orgId, fn)`, which sets `app.org_id` transaction-locally; outside it RLS hides every row.
