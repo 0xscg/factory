@@ -14,7 +14,8 @@
     "./checklists": "./src/checklists/index.ts",
     "./deadlines": "./src/deadlines/index.ts",
     "./reporting": "./src/reporting/index.ts",
-    "./deadlines/worker": "./src/deadlines/worker.ts"
+    "./deadlines/worker": "./src/deadlines/worker.ts",
+    "./export": "./src/export/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
