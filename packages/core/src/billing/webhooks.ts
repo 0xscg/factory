@@ -18,17 +18,26 @@ export type EventHandlers = Partial<{
 }>;
 
 /**
- * Idempotency store: Stripe redelivers events, so processing must be
- * at-most-once per event id. Backed by a DB table once the chassis DB
- * foundation lands; tests use an in-memory Set.
+ * Idempotency store: Stripe redelivers events. Semantics are
+ * at-LEAST-once — an event is marked processed only after its handler
+ * succeeds, so a handler failure leaves the event unmarked and Stripe's
+ * redelivery retries it (a durable mark-before-handle would turn any
+ * transient failure into permanent event loss). Handlers must therefore
+ * be idempotent; the narrow race between wasProcessed and markProcessed
+ * can run a handler twice, which idempotent handlers absorb.
  */
 export interface ProcessedEventStore {
-  /** Returns true if the id was newly marked, false if already processed. */
-  markProcessed(eventId: string): Promise<boolean>;
+  /** True if this event id has already been fully processed. */
+  wasProcessed(eventId: string): Promise<boolean>;
+  /** Marks the id processed. Returns false if another delivery won. */
+  markProcessed(eventId: string, eventType: string): Promise<boolean>;
 }
 
 export class InMemoryProcessedEventStore implements ProcessedEventStore {
   private seen = new Set<string>();
+  async wasProcessed(eventId: string): Promise<boolean> {
+    return this.seen.has(eventId);
+  }
   async markProcessed(eventId: string): Promise<boolean> {
     if (this.seen.has(eventId)) return false;
     this.seen.add(eventId);
@@ -44,7 +53,9 @@ export function verifyWebhookSignature(
 ): Stripe.Event {
   const secret = webhookSecret ?? loadBillingEnv().STRIPE_WEBHOOK_SECRET;
   if (!secret) {
-    throw new Error("STRIPE_WEBHOOK_SECRET is not configured; refusing to accept webhooks.");
+    throw new Error(
+      "STRIPE_WEBHOOK_SECRET is not configured; refusing to accept webhooks.",
+    );
   }
   return stripe.webhooks.constructEvent(rawBody, signatureHeader, secret);
 }
@@ -63,9 +74,12 @@ export async function handleWebhookEvent(
   const handler = handlers[event.type as HandledEventType];
   if (!handler) return { received: true, handled: false, duplicate: false };
 
-  const fresh = await store.markProcessed(event.id);
-  if (!fresh) return { received: true, handled: false, duplicate: true };
+  if (await store.wasProcessed(event.id))
+    return { received: true, handled: false, duplicate: true };
 
+  // Handle first, mark after: a throw here propagates (endpoint returns
+  // non-2xx), the event stays unmarked, and Stripe redelivers.
   await handler(event);
+  await store.markProcessed(event.id, event.type);
   return { received: true, handled: true, duplicate: false };
 }
