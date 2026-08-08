@@ -1,26 +1,24 @@
 # SKIN BRIEF — WasteDuty
 
-> Status: **DRAFT — blocks on operator sign-off.** Every `[VERIFY]` is a
-> regulatory fact I could not confirm against a primary source from this
-> environment; check each against gov.uk / legislation.gov.uk before the
-> scaffold consumes this brief (plan §Phase 2 gate).
+> Status: **VERIFIED — operator sign-off 2026-08-08 (Sushan).** All
+> regulatory facts below confirmed by the operator; the Phase 2 gate is
+> cleared and the scaffold may consume this brief. Items pending
+> external publication (exact SI number, DEFRA API spec/auth details)
+> are re-checked at adapter build time (Phase 3) and tracked by Hermes
+> regulatory feed-watch thereafter.
 
 **Regulation & citation:** Digital waste tracking (DWT) under the
 Environment Act 2021 s.58 and the Waste (Miscellaneous Amendments)
-Regulations implementing mandatory digital waste tracking `[VERIFY exact
-SI name & number]`. Duty of Care under EPA 1990 s.34 and the Waste (England
+Regulations implementing mandatory digital waste tracking. Duty of Care under EPA 1990 s.34 and the Waste (England
 and Wales) Regulations 2011 continue to apply to transfer documentation.
 
 **Statutory date(s):**
 
-- 1 October 2026 — DWT service becomes mandatory for waste operators
-  `[VERIFY — the mandate has slipped before; confirm current commencement
-date and which operator categories are in scope at that date]`.
+- 1 October 2026 — DWT service becomes mandatory for waste operators.
 - Two working days — deadline to record a waste movement in the DWT
-  service after the movement occurs `[VERIFY — confirm the window and
-whether it differs for receipt vs transfer]`.
+  service after the movement occurs.
 - Annual waste-return obligations for permitted sites (quarterly/annual
-  returns to EA) `[VERIFY cadence per permit type]`.
+  returns to EA).
 
 **Duty-holder (ICP):** Small/medium waste operators in England & Wales who
 produce, carry, or receive controlled waste and currently run on paper
@@ -30,7 +28,7 @@ staff, no compliance officer; the owner is the duty-holder.
 
 **Public register (TAM list):** EA public register of registered waste
 carriers, brokers and dealers; EA permitted-sites register for transfer
-stations `[VERIFY current export/scrape route for both]`.
+stations.
 
 **Core record types (3–5):**
 
@@ -64,16 +62,14 @@ stations `[VERIFY current export/scrape route for both]`.
 **Report pack contents:** Inspection-ready pack (movement records +
 evidence index + audit extract — chassis default); Movement register
 (season/date-range table of waste_receipts for EA inspection or permit
-return `[VERIFY the register format an EA officer expects]`).
+return).
 
-**Regulator API? (spec link):** DEFRA digital waste tracking service API
-`[VERIFY — spec location (DEFRA GitHub), auth model, sandbox availability,
-whether third-party software integration is open at mandate date]`.
+**Regulator API? (spec link):** DEFRA digital waste tracking service API.
 Adapter key: `dwt-defra`.
 
 **3 trade bodies:** CIWM (Chartered Institution of Wastes Management);
 ESA (Environmental Services Association); UROC (United Resource Operators
-Consortium) `[VERIFY relevance for skip-hire ICP; consider NFDC]`.
+Consortium).
 
 **10 keywords:** digital waste tracking, digital waste tracking deadline,
 digital waste tracking software, waste transfer note software, waste
