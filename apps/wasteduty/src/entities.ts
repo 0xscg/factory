@@ -28,6 +28,21 @@ export const wasteReceiptSchema = z.object({
   transferDate: isoDate,
   /** DWT service submission reference — set once recorded with DEFRA. */
   dwtSubmissionRef: z.string().min(1).optional(),
+  // --- DWT Receipt-of-Waste submission fields (docs/dwt-defra-api.md).
+  // Optional at record level so paper-era records stay importable; the
+  // adapter requires them before submission.
+  physicalForm: z.string().min(1).optional(),
+  containerCount: z.number().int().positive().optional(),
+  containerType: z.string().min(1).optional(),
+  weightIsEstimated: z.boolean().optional(),
+  hazardous: z.boolean().optional(),
+  /** Disposal/recovery code, e.g. "R13", "D15". */
+  disposalOrRecoveryCode: z
+    .string()
+    .regex(/^[DR]\d{1,2}$/i)
+    .optional(),
+  /** Receiver's permit/exemption number (DWT mandatory field). */
+  receiverAuthorisationNumber: z.string().min(1).optional(),
 });
 
 export const wasteCarrierSchema = z.object({
