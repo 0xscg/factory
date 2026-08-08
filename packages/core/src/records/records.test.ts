@@ -339,8 +339,8 @@ describe("soft delete", () => {
 
     await readRecords(app.db, ctx.orgId, async (tx) => {
       expect(await getRecord(tx, receipt.type, created.id)).toBeNull();
-      expect(await listRecords(tx, receipt.type)).toEqual([]);
-      const withDeleted = await listRecords(tx, receipt.type, {
+      expect(await listRecords(tx, "wasteduty", receipt.type)).toEqual([]);
+      const withDeleted = await listRecords(tx, "wasteduty", receipt.type, {
         includeDeleted: true,
       });
       expect(withDeleted.map((r) => r.id)).toEqual([created.id]);
@@ -428,7 +428,7 @@ describe("tenancy (RLS)", () => {
     // Invisible to org B's reads.
     await readRecords(app.db, ctxB.orgId, async (tx) => {
       expect(await getRecord(tx, receipt.type, created.id)).toBeNull();
-      expect(await listRecords(tx, receipt.type)).toEqual([]);
+      expect(await listRecords(tx, "wasteduty", receipt.type)).toEqual([]);
     });
 
     // Update by id from org B's context fails — RLS hides the row.

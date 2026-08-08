@@ -12,6 +12,7 @@
     "./evidence": "./src/evidence/index.ts",
     "./checklists": "./src/checklists/index.ts",
     "./deadlines": "./src/deadlines/index.ts",
+    "./reporting": "./src/reporting/index.ts",
     "./deadlines/worker": "./src/deadlines/worker.ts"
   },
   "scripts": {

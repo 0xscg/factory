@@ -191,10 +191,17 @@ export async function getRecord(
 
 export async function listRecords(
   tx: TenantTx,
+  product: string,
   entityType: string,
   opts: { limit?: number; offset?: number; includeDeleted?: boolean } = {},
 ): Promise<RecordRow[]> {
-  const conditions = [eq(records.entityType, entityType)];
+  // Product-scoped: a cross-sold org running two skins with colliding
+  // entity keys must never see the other skin's rows (RLS only scopes
+  // by org).
+  const conditions = [
+    eq(records.product, product),
+    eq(records.entityType, entityType),
+  ];
   if (!opts.includeDeleted) conditions.push(isNull(records.deletedAt));
   return tx
     .select()
