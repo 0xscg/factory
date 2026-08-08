@@ -10,7 +10,9 @@
     "./audit": "./src/audit/index.ts",
     "./records": "./src/records/index.ts",
     "./evidence": "./src/evidence/index.ts",
-    "./checklists": "./src/checklists/index.ts"
+    "./checklists": "./src/checklists/index.ts",
+    "./deadlines": "./src/deadlines/index.ts",
+    "./deadlines/worker": "./src/deadlines/worker.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
@@ -18,7 +20,9 @@
     "dev:webhooks": "tsx scripts/webhook-dev-server.mts"
   },
   "dependencies": {
+    "bullmq": "^6.0.9",
     "drizzle-orm": "^0.45.2",
+    "ioredis": "^6.0.0",
     "postgres": "^3.4.9",
     "stripe": "^18.4.0",
     "zod": "^3.25.0"

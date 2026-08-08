@@ -43,6 +43,13 @@
       "when": 1786142672243,
       "tag": "0005_checklists",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786143098873,
+      "tag": "0006_deadlines",
+      "breakpoints": true
     }
   ]
 }
