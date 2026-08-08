@@ -33,6 +33,25 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@22.20.1)(tsx@4.23.11)
 
+  packages/config:
+    dependencies:
+      '@factory/core':
+        specifier: workspace:*
+        version: link:../core
+      zod:
+        specifier: ^3.25.0
+        version: 3.25.76
+    devDependencies:
+      '@factory/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/tsconfig
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.1)(tsx@4.23.11)
+
   packages/core:
     dependencies:
       bullmq:
@@ -63,6 +82,18 @@ importers:
       tsx:
         specifier: ^4.23.11
         version: 4.23.11
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.1)(tsx@4.23.11)
+
+  packages/ui:
+    devDependencies:
+      '@factory/tsconfig':
+        specifier: workspace:*
+        version: link:../../tooling/tsconfig
       typescript:
         specifier: ^5.9.2
         version: 5.9.3
