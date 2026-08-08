@@ -1,4 +1,4 @@
-import { and, eq, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import type Stripe from "stripe";
 import { mutate, type MutationContext } from "../audit/mutate.js";
 import { withOrg, type Db } from "../db/client.js";

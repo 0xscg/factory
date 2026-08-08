@@ -112,7 +112,7 @@ function fakeSub(overrides: Record<string, unknown> = {}): Stripe.Subscription {
       ],
     },
     ...overrides,
-  } as any;
+  } as unknown as Stripe.Subscription;
 }
 
 function subFor(
@@ -131,7 +131,13 @@ function fakeEvent(
   created = nextEpoch(),
   id = `evt_${uniq()}`,
 ): Stripe.Event {
-  return { id, object: "event", type, created, data: { object } } as any;
+  return {
+    id,
+    object: "event",
+    type,
+    created,
+    data: { object },
+  } as unknown as Stripe.Event;
 }
 
 function fakeInvoice(
@@ -143,7 +149,7 @@ function fakeInvoice(
     parent: metadata
       ? { subscription_details: { metadata } }
       : { subscription_details: {} },
-  } as any;
+  } as unknown as Stripe.Invoice;
 }
 
 async function adminSub(stripeSubscriptionId: string) {
