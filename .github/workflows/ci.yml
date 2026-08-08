@@ -26,6 +26,10 @@ jobs:
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
+      gotenberg:
+        image: gotenberg/gotenberg:8
+        ports:
+          - 3100:3000
     env:
       DATABASE_URL_TEST: postgres://factory:factory@localhost:5433/factory
     steps:
