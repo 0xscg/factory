@@ -88,6 +88,22 @@ importers:
         specifier: ^3.2.4
         version: 3.2.7(@types/node@22.20.1)(jiti@1.21.7)(tsx@4.23.11)
 
+  packages/adapters/dwt-defra:
+    dependencies:
+      zod:
+        specifier: ^3.25.0
+        version: 3.25.76
+    devDependencies:
+      '@factory/tsconfig':
+        specifier: workspace:*
+        version: link:../../../tooling/tsconfig
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.4
+        version: 3.2.7(@types/node@22.20.1)(jiti@1.21.7)(tsx@4.23.11)
+
   packages/config:
     dependencies:
       '@factory/core':
