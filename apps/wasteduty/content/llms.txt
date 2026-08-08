@@ -1,0 +1,15 @@
+# WasteDuty
+
+> WasteDuty is record-keeping and workflow software for UK permitted waste receiving sites (transfer stations, treatment facilities, skip-hire yards) preparing for mandatory digital waste tracking from 1 October 2026. It tracks the two-working-day recording deadline per movement, records carrier registration checks, stores hashed evidence, submits via the DEFRA API, and produces inspection-ready packs. The site operator remains the legal duty-holder. WasteDuty is a trading name of [Ltd], Co. no. XXXX.
+
+## Guides
+
+- [The complete guide to digital waste tracking (DWT) 2026](https://wasteduty.co.uk/guides/complete-guide-digital-waste-tracking-2026): Who must comply and when, the two-working-day rule, mandatory receipt fields, enforcement, and how permitted receiving sites prepare.
+- [Digital waste tracking deadline: the dates that matter](https://wasteduty.co.uk/guides/digital-waste-tracking-deadline): The phased mandate dates (Oct 2026 receiving sites E&W, Jan 2027 Scotland/NI, Oct 2027 carriers) and the rolling two-working-day deadline.
+- [Digital waste tracking software: do you need it, and what to look for](https://wasteduty.co.uk/guides/digital-waste-tracking-software): Honest comparison of the free gov.uk service against paid software, and a buyer's checklist.
+- [Waste transfer notes vs digital waste tracking](https://wasteduty.co.uk/guides/waste-transfer-note-vs-digital-waste-tracking): How the paper transfer-note regime compares with the DWT receipt record and what carries over.
+- [EWC codes: a practical guide for receiving sites](https://wasteduty.co.uk/guides/ewc-codes-guide): Choosing the right 6-digit List of Waste code at the weighbridge and why it is a mandatory DWT field.
+- [Waste carrier registration checks (CBDU)](https://wasteduty.co.uk/guides/waste-carrier-registration-check): Verifying carriers on the EA public register and keeping evidence of every check.
+- [Duty of care waste records](https://wasteduty.co.uk/guides/duty-of-care-waste-records): The records that evidence EPA 1990 s.34 duty of care, retention periods, and how DWT layers on top.
+- [The waste movement register](https://wasteduty.co.uk/guides/waste-movement-register-guide): Building a register on the DWT field set that serves inspections and permit returns.
+- [Digital waste tracking for skip hire firms and transfer stations](https://wasteduty.co.uk/guides/dwt-for-skip-hire-transfer-stations): ICP-specific guide — the receiver/carrier two-hat problem and a weighbridge workflow for October 2026.
