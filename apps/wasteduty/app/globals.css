@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Theme tokens are injected at render time in app/layout.tsx via
+   themeCss("green") from @factory/ui/themes — single source of truth,
+   no duplicated :root block here. */
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
