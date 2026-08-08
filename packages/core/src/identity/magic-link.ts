@@ -2,8 +2,9 @@ import { and, eq, gt, isNull, sql } from "drizzle-orm";
 import type { Db } from "../db/client.js";
 import { magicLinkTokens, users } from "../db/schema/index.js";
 import type { MailSender } from "./mail.js";
+import { enforceRateLimit } from "./rate-limit.js";
 import { generateToken, hashToken } from "./tokens.js";
-import { upsertUserByEmail } from "./users.js";
+import { emailSchema, upsertUserByEmail } from "./users.js";
 
 export const MAGIC_LINK_TTL_MINUTES = 15;
 
@@ -25,8 +26,16 @@ export async function requestMagicLink(
   buildUrl: (token: string) => string,
   mail: MailSender,
 ): Promise<MagicLinkRequest> {
-  const user = await upsertUserByEmail(db, rawEmail);
-  const email = user.email;
+  // Rate-limit BEFORE creating the user row, on the normalized email —
+  // otherwise scripted signup spam mints unbounded users rows first.
+  // Per-email: caps token minting AND the emails an attacker can aim
+  // at someone's inbox. 5/15min matches the token TTL window.
+  const email = emailSchema.parse(rawEmail);
+  await enforceRateLimit(db, `magic_link:${email}`, {
+    max: 5,
+    windowSeconds: 15 * 60,
+  });
+  const user = await upsertUserByEmail(db, email);
 
   const token = generateToken();
   const expiresAt = new Date(Date.now() + MAGIC_LINK_TTL_MINUTES * 60_000);
@@ -72,7 +81,7 @@ export async function verifyMagicLink(
   if (!consumed) return null;
 
   const [user] = await db
-    .select()
+    .select({ id: users.id, totpEnabled: users.totpEnabled })
     .from(users)
     .where(eq(users.id, consumed.userId));
   if (!user) return null;

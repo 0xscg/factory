@@ -1,5 +1,7 @@
 import {
+  bigint,
   boolean,
+  integer,
   pgEnum,
   pgTable,
   primaryKey,
@@ -21,9 +23,26 @@ export const users = pgTable("users", {
   /** Base32 TOTP secret; set when 2FA enrolment starts, verified on first use. */
   totpSecret: text("totp_secret"),
   totpEnabled: boolean("totp_enabled").notNull().default(false),
+  /**
+   * Highest TOTP counter step already accepted — a code is valid only
+   * for a step strictly greater, so an intercepted code can't be
+   * replayed inside its ±1-step window.
+   */
+  totpLastUsedStep: bigint("totp_last_used_step", { mode: "number" }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
+});
+
+/**
+ * Fixed-window rate-limit counters for auth endpoints (magic-link
+ * requests per email, TOTP attempts per user). System table like
+ * stripe_events: no tenant data — keys are derived identifiers.
+ */
+export const authAttempts = pgTable("auth_attempts", {
+  key: text("key").primaryKey(),
+  windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
+  count: integer("count").notNull(),
 });
 
 /** Only the SHA-256 hash of a token is ever stored. */

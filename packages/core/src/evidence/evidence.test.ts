@@ -168,6 +168,7 @@ beforeEach(async () => {
   // evidence, audit_log and record_versions deliberately NOT truncated —
   // they can't be. Fresh orgs per test + id-scoped assertions keep isolation.
   await admin.db.execute(sql`TRUNCATE users, orgs, records CASCADE`);
+  await admin.db.execute(sql`DELETE FROM auth_attempts`);
   mail = new FakeMailSender();
 });
 

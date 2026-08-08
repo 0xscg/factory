@@ -37,6 +37,9 @@ export {
   startTotpEnrolment,
   confirmTotpEnrolment,
   verifyUserTotp,
+  disableTotp,
 } from "./enrolment.js";
+export { enforceRateLimit, RateLimitError } from "./rate-limit.js";
+export { matchTotpStep } from "./totp.js";
 export { ConsoleMailSender, type MailSender } from "./mail.js";
 export { upsertUserByEmail, emailSchema } from "./users.js";

@@ -189,6 +189,7 @@ beforeEach(async () => {
   await admin.db.execute(
     sql`TRUNCATE users, orgs, records, checklists, checklist_steps CASCADE`,
   );
+  await admin.db.execute(sql`DELETE FROM auth_attempts`);
   mail = new FakeMailSender();
 });
 

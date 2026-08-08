@@ -53,19 +53,36 @@ export function totpCode(secret: string, atMs: number): string {
   return code.toString().padStart(TOTP_DIGITS, "0");
 }
 
-/** Accepts the current step ±1 (clock skew). Constant-time comparison. */
+/**
+ * Accepts the current step ±1 (clock skew), constant-time comparison.
+ * Returns the matched counter STEP so callers can persist it and
+ * reject replays (a code must never be accepted twice — the DB guard
+ * in verifyUserTotp only advances forward). Null when no step matches.
+ */
+export function matchTotpStep(
+  secret: string,
+  token: string,
+  atMs: number = Date.now(),
+): number | null {
+  if (!/^\d{6}$/.test(token)) return null;
+  const tokenBuf = Buffer.from(token);
+  for (const skew of [0, -1, 1]) {
+    const stepMs = atMs + skew * TOTP_STEP_SECONDS * 1000;
+    const expected = totpCode(secret, stepMs);
+    if (timingSafeEqual(tokenBuf, Buffer.from(expected))) {
+      return Math.floor(stepMs / 1000 / TOTP_STEP_SECONDS);
+    }
+  }
+  return null;
+}
+
+/** Stateless check — login flows must use verifyUserTotp (replay-safe). */
 export function verifyTotp(
   secret: string,
   token: string,
   atMs: number = Date.now(),
 ): boolean {
-  if (!/^\d{6}$/.test(token)) return false;
-  const tokenBuf = Buffer.from(token);
-  for (const skew of [0, -1, 1]) {
-    const expected = totpCode(secret, atMs + skew * TOTP_STEP_SECONDS * 1000);
-    if (timingSafeEqual(tokenBuf, Buffer.from(expected))) return true;
-  }
-  return false;
+  return matchTotpStep(secret, token, atMs) !== null;
 }
 
 /** otpauth:// URI for authenticator-app enrolment QR codes. */

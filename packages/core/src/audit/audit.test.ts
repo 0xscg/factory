@@ -126,6 +126,7 @@ beforeEach(async () => {
   // audit_log is deliberately NOT truncated — it can't be. Fresh orgs per
   // test keep assertions isolated.
   await admin.db.execute(sql`TRUNCATE users, orgs CASCADE`);
+  await admin.db.execute(sql`DELETE FROM auth_attempts`);
   mail = new FakeMailSender();
 });
 

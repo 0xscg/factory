@@ -91,6 +91,9 @@ afterAll(async () => {
 
 beforeEach(async () => {
   await admin.db.execute(sql`TRUNCATE users, orgs CASCADE`);
+  // Fixed emails + persistent rate-limit counters would trip the
+  // magic-link limit on a second run inside the window.
+  await admin.db.execute(sql`DELETE FROM auth_attempts`);
   mail = new FakeMailSender();
 });
 

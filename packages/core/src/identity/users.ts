@@ -16,7 +16,17 @@ export async function upsertUserByEmail(db: Db, rawEmail: string) {
     .insert(users)
     .values({ email })
     .onConflictDoNothing({ target: users.email });
-  const [user] = await db.select().from(users).where(eq(users.email, email));
+  // Explicit columns: totp_secret must never ride along in rows handed
+  // back to auth flows (security audit H1).
+  const [user] = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      totpEnabled: users.totpEnabled,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(eq(users.email, email));
   if (!user) throw new Error("failed to upsert user");
   return user;
 }
