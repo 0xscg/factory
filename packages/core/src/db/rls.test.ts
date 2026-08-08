@@ -17,10 +17,10 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import {
   createDb,
   orgs,
-  runMigrations,
   withOrg,
   type DbHandle,
 } from "./index.js";
+import { runMigrations } from "./migrate.js";
 
 const ADMIN_URL =
   process.env.DATABASE_URL_TEST ??

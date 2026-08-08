@@ -16,7 +16,8 @@
 import { eq, sql } from "drizzle-orm";
 import { z } from "zod";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { createDb, runMigrations, type DbHandle } from "../db/index.js";
+import { createDb, type DbHandle } from "../db/index.js";
+import { runMigrations } from "../db/migrate.js";
 import { withOrg } from "../db/client.js";
 import { auditLog, records, recordVersions } from "../db/schema/index.js";
 import type { MutationContext } from "../audit/mutate.js";

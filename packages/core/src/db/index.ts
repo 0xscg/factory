@@ -6,7 +6,6 @@ export {
   type DbHandle,
   type TenantTx,
 } from "./client.js";
-export { runMigrations } from "./migrate.js";
 export {
   tenantColumns,
   timestamps,

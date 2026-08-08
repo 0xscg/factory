@@ -7,6 +7,7 @@
     "./billing": "./src/billing/index.ts",
     "./identity": "./src/identity/index.ts",
     "./db": "./src/db/index.ts",
+    "./db/migrate": "./src/db/migrate.ts",
     "./audit": "./src/audit/index.ts",
     "./records": "./src/records/index.ts",
     "./evidence": "./src/evidence/index.ts",

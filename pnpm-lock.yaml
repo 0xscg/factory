@@ -44,6 +44,9 @@ importers:
       '@factory/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      drizzle-orm:
+        specifier: ^0.45.2
+        version: 0.45.2(postgres@3.4.9)
       next:
         specifier: ^15.4.5
         version: 15.5.23(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

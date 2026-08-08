@@ -10,7 +10,8 @@
 import { randomUUID } from "node:crypto";
 import { eq, sql } from "drizzle-orm";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
-import { createDb, runMigrations, type DbHandle } from "../db/index.js";
+import { createDb, type DbHandle } from "../db/index.js";
+import { runMigrations } from "../db/migrate.js";
 import { authAttempts, stripeEvents, users } from "../db/schema/index.js";
 import { withOrg } from "../db/client.js";
 import { readAuditTrail } from "../audit/index.js";
